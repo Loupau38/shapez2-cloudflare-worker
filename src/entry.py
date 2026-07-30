@@ -24,7 +24,7 @@ class Default(WorkerEntrypoint):
             if imageName in IMAGES:
                 redirect = IMAGES[imageName][1]
             else:
-                redirect = "https://loupau38.github.io/"
+                redirect = "https://github.com/Loupau38/shapez2-enhanced-gifs"
 
             return Response.redirect(redirect)
 
