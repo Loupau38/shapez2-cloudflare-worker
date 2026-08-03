@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "shapez2-enhanced-gifs",
+	"name": "shapez2",
 	"main": "src/entry.py",
 	"compatibility_date": "2026-07-29",
 	"compatibility_flags": [

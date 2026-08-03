@@ -1,5 +1,5 @@
 [project]
-name = "shapez2-enhanced-gifs"
+name = "shapez2"
 version = "1.0.0"
 description = ""
 requires-python = ">=3.12"

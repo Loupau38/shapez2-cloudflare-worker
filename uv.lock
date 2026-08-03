@@ -229,8 +229,8 @@ wheels = [
 ]
 
 [[package]]
-name = "shapez2-enhanced-gifs"
-version = "0.1.0"
+name = "shapez2"
+version = "1.0.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]

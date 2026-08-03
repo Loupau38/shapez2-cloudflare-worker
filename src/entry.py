@@ -1,7 +1,7 @@
 from workers import Response, WorkerEntrypoint, Request
 import urllib.parse
 
-IMAGES = {
+ENHANCED_GIFS = {
     "notch.gif" : (
         "notch.gif",
         "https://shapez2.wiki.gg/wiki/Notch"
@@ -16,22 +16,23 @@ class Default(WorkerEntrypoint):
 
     async def fetch(self, request:Request):
 
-        imageName = urllib.parse.urlsplit(request.url).path[1:] # remove leading '/'
+        path = urllib.parse.urlsplit(request.url).path[1:] # remove leading '/'
 
-        userAgent = request.headers.get("User-Agent")
-        if (userAgent is None) or ("discord" not in userAgent.lower()):
+        if path.startswith("gif/"):
+            return await enhancedGIFs(self,request,path.removeprefix("gif/"))
 
-            if imageName in IMAGES:
-                redirect = IMAGES[imageName][1]
-            else:
-                redirect = "https://github.com/Loupau38/shapez2-enhanced-gifs"
+        return Response.redirect("https://github.com/Loupau38/shapez2-cloudflare-worker")
 
-            return Response.redirect(redirect)
+async def enhancedGIFs(self:Default,request:Request,path:str) -> None:
 
-        if imageName not in IMAGES:
-            return Response(status=404)
+    if path not in ENHANCED_GIFS:
+        return Response(status=404)
 
-        fileName = IMAGES[imageName][0]
-        fileType = fileName.split(".")[-1]
-        image:Response = await self.env.ASSETS.fetch(f"https://example.com/{fileName}")
-        return Response(await image.bytes(),headers={"Content-Type": f"image/{fileType}"})
+    userAgent = request.headers.get("User-Agent")
+    if (userAgent is None) or ("discord" not in userAgent.lower()):
+        return Response.redirect(ENHANCED_GIFS[path][1])
+
+    fileName = ENHANCED_GIFS[path][0]
+    fileType = fileName.split(".")[-1]
+    image:Response = await self.env.ASSETS.fetch(f"https://example.com/{fileName}")
+    return Response(await image.bytes(),headers={"Content-Type": f"image/{fileType}"})
